@@ -3,7 +3,9 @@
 """Command-line application for weather forecasting."""
 
 from .api_client import WeatherAPIError
-from .forecast import ( get_forecast, forecast_to_dataframe,summarize_forecast,)
+from .forecast import WeatherForecaster
+# from .api_client import WeatherAPIError
+# from .forecast import ( get_forecast, forecast_to_dataframe,summarize_forecast,)
 from .geocoding import geocode, choose_location
 from .visualization import plot_forecast
 
@@ -52,16 +54,20 @@ def main():
             print("Enter a number between 1 and 16.")
 
         # Step 3: Retrieve and process the forecast.
-        forecast_data = get_forecast( latitude,  longitude,  days=days, )
+        forecaster = WeatherForecaster( latitude=latitude,  longitude=longitude,  days=days, )
+        forecaster.fetch_forecast()
+        forecast_df = forecaster.to_dataframe()
 
-        forecast_df = forecast_to_dataframe(forecast_data)
+        # forecast_data = get_forecast( latitude,  longitude,  days=days, )
+        # forecast_df = forecast_to_dataframe(forecast_data)
 
         print("\nDAILY FORECAST")
         print("-" * 50)
         print(forecast_df.to_string(index=False))
 
         # Step 4: Display summary statistics.
-        summary = summarize_forecast(forecast_df)
+        # summary = summarize_forecast(forecast_df)
+        summary = forecaster.summarize()
 
         print("\nFORECAST SUMMARY")
         print("-" * 50)

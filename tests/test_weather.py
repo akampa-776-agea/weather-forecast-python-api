@@ -17,7 +17,8 @@ from src.weather_forecast import (
     request_json,
     summarize_forecast,
 )
-
+# adding test
+from src.weather_forecast.forecast import WeatherForecaster
 
 SAMPLE_DIR = Path("sample_data")
 
@@ -129,3 +130,49 @@ def test_negative_retry_count_is_rejected():
 def test_custom_api_exception_exists():
     error = WeatherAPIError("Test error")
     assert str(error) == "Test error"
+
+# Adding unit tests for the new class
+def test_weather_forecaster_initialization():
+    """Check that a forecaster stores valid configuration."""
+    forecaster = WeatherForecaster(0.31628, 32.58219, 3)
+
+    assert forecaster.latitude == 0.31628
+    assert forecaster.longitude == 32.58219
+    assert forecaster.days == 3
+    assert forecaster.forecast_data is None
+
+
+def test_weather_forecaster_rejects_invalid_latitude():
+    """Reject latitude values outside the valid range."""
+    with pytest.raises(ValueError):
+        WeatherForecaster(91, 32.58219, 3)
+
+
+def test_weather_forecaster_rejects_invalid_days():
+    """Reject forecast durations outside the supported range."""
+    with pytest.raises(ValueError):
+        WeatherForecaster(0.31628, 32.58219, 0)
+
+
+def test_weather_forecaster_dataframe_and_summary(forecast_sample):
+    """Test DataFrame conversion and summary using saved sample data."""
+    forecaster = WeatherForecaster(0.31628, 32.58219, 3)
+    forecaster.forecast_data = forecast_sample
+
+    df = forecaster.to_dataframe()
+    summary = forecaster.summarize()
+
+    assert len(df) == 3
+    assert "Max Temperature (°C)" in df.columns
+    assert summary["warmest_temperature_c"] == 14.0
+
+
+def test_weather_forecaster_requires_data_before_analysis():
+    """Require forecast data before converting or summarizing."""
+    forecaster = WeatherForecaster(0.31628, 32.58219, 3)
+
+    with pytest.raises(RuntimeError):
+        forecaster.to_dataframe()
+
+    with pytest.raises(RuntimeError):
+        forecaster.summarize()

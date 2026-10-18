@@ -139,3 +139,48 @@ def summarize_forecast(df: pd.DataFrame) -> dict[str, Any]:
 
 # 2. Summary statistics
 # The wettest day is reported as 18 October because all three days have zero precipitation. When values tie, pandas returns the first matching row; this is expected.
+
+
+class WeatherForecaster:
+    """Manage weather forecast retrieval and analysis for one location."""
+
+    def __init__( self, latitude: float, longitude: float, days: int = 7, ) -> None:
+        """Initialize a forecaster with validated location and forecast settings."""
+        if not -90 <= latitude <= 90:
+            raise ValueError("Latitude must be between -90 and 90.")
+
+        if not -180 <= longitude <= 180:
+            raise ValueError("Longitude must be between -180 and 180.")
+
+        if (  isinstance(days, bool) or not isinstance(days, int)or not 1 <= days <= 16):
+            raise ValueError("Days must be an integer between 1 and 16.")
+
+        self.latitude: float = latitude
+        self.longitude: float = longitude
+        self.days: int = days
+        self.forecast_data: dict[str, Any] | None = None
+
+    def fetch_forecast(self) -> dict[str, Any]:
+        """Retrieve and store forecast data for this location."""
+        self.forecast_data = get_forecast( lat=self.latitude,  lon=self.longitude, days=self.days,)
+        return self.forecast_data
+
+    def to_dataframe(self) -> pd.DataFrame:
+        """Convert the stored forecast into a DataFrame."""
+        if self.forecast_data is None:
+            raise RuntimeError( "No forecast data available. Call fetch_forecast() first.")
+
+        return forecast_to_dataframe(self.forecast_data)
+
+    def summarize(self) -> dict[str, Any]:
+        """Return summary statistics for the stored forecast."""
+        forecast_df = self.to_dataframe()
+        return summarize_forecast(forecast_df)
+# class WeatherForecaster adds:
+# 1. Attributes: location, forecast duration, and stored forecast data.
+# 2. Methods: fetch, transform, and summarize.
+# Encapsulation: forecast configuration and retrieved data are managed together in one object.
+# Composition/reuse: the class delegates work to your existing tested functions instead of duplicating their logic.
+# Type hints and docstrings: included throughout.
+# python -c "import json; from pathlib import Path; from src.weather_forecast.forecast import WeatherForecaster; data = json.loads(Path('sample_data/forecast_sample.json').read_text(encoding='utf-8')); w = WeatherForecaster(0.31628, 32.58219, 3); w.forecast_data = data; print('Location:', w.latitude, w.longitude); print('Forecast days:', len(w.to_dataframe())); print('Summary:', w.summarize())"
+# these results come from the sample dataset, not a live forecast for Kampala.

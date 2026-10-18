@@ -51,8 +51,12 @@ Mini-Project 1 Weather Forecast with Python Web APIs/
 │   └── geocoding_sample.json
 │
 ├── notebooks/
+│   └── project1_weather.ipynb
+│
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+├── pytest.ini
+└── .gitignore
 ```
 
 ## 5. Features
@@ -78,7 +82,21 @@ Validate user inputs and handle common API request failures using a shared HTTP 
 ### Automated Testing
 Use Pytest to check data processing, input validation, weather-code decoding, and other core functions.
 
-## 6. Installation
+## 6. Object-Oriented Programming
+
+The application implements a `WeatherForecaster` class in `src/weather_forecast/forecast.py` to manage forecast retrieval and analysis for a selected geographic location.
+
+The class includes:
+
+- **Attributes:** `latitude`, `longitude`, `days`, and `forecast_data`.
+- **Constructor:** `__init__()` initializes the object and validates its configuration.
+- **`fetch_forecast()`:** Retrieves and stores forecast data.
+- **`to_dataframe()`:** Converts the stored forecast response into a Pandas DataFrame.
+- **`summarize()`:** Calculates summary statistics from the forecast.
+
+The class uses docstrings and type hints to improve readability and maintainability. It also reuses existing functions for data retrieval and processing, avoiding unnecessary duplication.
+
+## 7. Installation
 
 Ensure Python is installed on your computer.
 
@@ -90,7 +108,7 @@ Install the required dependencies:
 python -m pip install -r requirements.txt
 ```
 
-## 7. Running the Application
+## 8. Running the Application
 
 From the project root, run:
 
@@ -108,31 +126,34 @@ Follow the prompts to:
 
 An internet connection is required to retrieve live weather data.
 
-## 8. Running the Tests
+## 9. Running the Tests
+## 9. Running the Tests
 
-Run the automated tests from the project root:
+Run the automated test suite from the project root:
 
 ```bash
-python -m pytest tests/test_weather.py -v
+python -m pytest
 ```
 
-The test suite uses saved JSON samples for offline testing of core data-processing functionality.
+The test suite contains 18 tests covering saved sample data, geocoding validation, weather-code decoding, forecast processing, summary statistics, API-client validation, and the `WeatherForecaster` class.
 
-## 9. Data Sources
+Tests use saved JSON samples for core offline functionality, so they do not require live API requests for those test cases.
+
+## 10. Data Sources
 
 - Geocoding API: https://geocoding-api.open-meteo.com/v1/search
 - Weather Forecast API: https://api.open-meteo.com/v1/forecast
 
 Weather data availability and forecasts are subject to the API provider's service and data coverage.
 
-## 10. Limitations
+## 11. Limitations
 
 - Forecast accuracy depends on the underlying weather model and forecast horizon.
 - Internet access is required for live API requests.
 - Location search can return multiple places with similar names, so users must select the intended location.
 - Offline tests use saved sample responses and do not guarantee that live API services are available.
 
-## 11. Future Improvements
+## 12. Future Improvements
 
 - Improve location ranking and matching.
 - Add weather alerts and recommendations.
@@ -140,7 +161,7 @@ Weather data availability and forecasts are subject to the API provider's servic
 - Add more extensive automated tests for API failures and application workflows.
 - Develop a graphical or web-based user interface.
 
-## 12. Author
+## 13. Author
 
 Developed as a Python mini-project to practise web API integration, data processing, visualization, modular programming, and automated testing.
 
