@@ -1,0 +1,18 @@
+
+{
+  "latitude": 51.05089,
+  "longitude": 13.73832,
+  "timezone": "Europe/Berlin",
+  "daily": {
+    "time": [
+      "2026-10-18",
+      "2026-10-19",
+      "2026-10-20"
+    ],
+    "temperature_2m_max": [12.5, 12.1, 14.0],
+    "temperature_2m_min": [9.3, 5.8, 3.5],
+    "precipitation_sum": [0.0, 0.0, 0.0],
+    "wind_speed_10m_max": [7.8, 8.6, 12.5],
+    "weather_code": [3, 3, 45]
+  }
+}

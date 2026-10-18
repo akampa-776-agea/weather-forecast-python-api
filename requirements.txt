@@ -1,0 +1,9 @@
+# list of external libraries the project needs
+
+requests # sending HTTP requests to the weather APIs.
+pandas  # converting forecast data into DataFrames and calculating summaries.
+matplotlib # plotting the forecast.
+pytest      # running automated tests.
+# verifying requirements
+# python -m pip install -r requirements.txt
+# python -m pytest tests/test_weather.py -v

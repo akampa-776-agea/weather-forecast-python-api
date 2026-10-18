@@ -1,0 +1,21 @@
+
+{
+  "results": [
+    {
+      "id": 2935022,
+      "name": "Dresden",
+      "latitude": 51.05089,
+      "longitude": 13.73832,
+      "country": "Germany",
+      "admin1": "Saxony"
+    },
+    {
+      "id": 2320000,
+      "name": "Kampala",
+      "latitude": 0.3476,
+      "longitude": 32.5825,
+      "country": "Uganda",
+      "admin1": "Central Region"
+    }
+  ]
+}
